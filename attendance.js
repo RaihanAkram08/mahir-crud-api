@@ -60,7 +60,7 @@ const updateAttendance = (req, res, id) => {
                 date,
                 status
             };
-            responseWithJSON(res, 200, { message: 'Absensi berhasil diperbarui' });
+            responseWithJSON(res, 200, { message: 'Absensi berhasil diperbarui', attendance_id: attendances[attendanceIndex].attendance_id });
         } else {
             responseWithJSON(res, 404, { message: 'Absensi tidak ditemukan!' });
         }
@@ -70,8 +70,9 @@ const updateAttendance = (req, res, id) => {
 const deleteAttendance = (res, id) => {
     const attendanceIndex = attendances.findIndex(a => a.attendance_id === parseInt(id));
     if (attendanceIndex !== -1) {
+        const deleteAttendanceId = attendances[attendanceIndex].attendance_id
         attendances.splice(attendanceIndex, 1);
-        responseWithJSON(res, 200, { message: 'Absensi berhasil dihapus!' })
+        responseWithJSON(res, 200, { message: 'Absensi berhasil dihapus!', attendance_id: deleteAttendanceId })
     } else {
         responseWithJSON(res, 404, { message: 'Absensi tidak ditemukan!' });
     }
@@ -91,7 +92,7 @@ const server = http.createServer((req, res) => {
     } else if (req.method === 'PUT' && pathname.startsWith('/api/attendance/')) {
         const id = pathname.split('/')[3];
         updateAttendance(req, res, id);
-    } else if (req.method === 'DELETE' && pathname.startsWith('/api/attendance')) {
+    } else if (req.method === 'DELETE' && pathname.startsWith('/api/attendance/')) {
         const id = pathname.split('/')[3];
         deleteAttendance(res, id);
     } else {

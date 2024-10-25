@@ -65,7 +65,7 @@ const updateNote = (req, res, id) => {
                 created_at: notes[noteIndex].created_at,
                 updated_at: new Date().toISOString()
             };
-            responseWithJSON(res, 200, { message: 'Catatan Berhasil Diperbarui!' });
+            responseWithJSON(res, 200, { message: 'Catatan Berhasil Diperbarui!', note_id: notes[noteIndex].note_id });
         } else {
             responseWithJSON(res, 404, { message: 'Catatan Tidak Ditemukan' });
         }
@@ -76,8 +76,9 @@ const updateNote = (req, res, id) => {
 const deleteNote = (res, id) => {
     const noteIndex = notes.findIndex(n => n.note_id === parseInt(id));
     if (noteIndex !== -1) {
+        const deleteNoteId = notes[noteIndex].note_id;
         notes.splice(noteIndex, 1);
-        responseWithJSON(res, 200, { message: 'Catatan Berhasil Dihapus!'})
+        responseWithJSON(res, 200, { message: 'Catatan Berhasil Dihapus!', note_id: deleteNoteId})
     } else {
         responseWithJSON(res, 404, { message: 'Catatan Tidak Ditemukan!'});
     }
